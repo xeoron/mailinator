@@ -23,5 +23,5 @@ setup(
     license='GPLv3',
     keywords=['mailinator', 'api'],
     packages=['mailinator'],
+    scripts=['bin/mailinator']
 )
-
