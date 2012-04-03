@@ -6,7 +6,7 @@ for updates to see if your desired email has arrived.
 
 ```python
 import mailinator
-mailinator.get_newest_mail('my_username', time_delta=5)
+email = mailinator.get_newest_mail('my_username', time_delta=5)
 ```
 
 The above code will refresh the `my_username@mailinator.com` mailbox until an
@@ -35,3 +35,8 @@ Returns something like the following
 ```
 pip install mailinator
 ```
+
+# Commmand line
+
+This module also includes the command `mailinator` which is simply a call to 
+`get_newest_mail` with the first command line argument treated as the user name.
