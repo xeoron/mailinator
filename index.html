@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mailinator by mellort</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Mailinator</h1>
+        <p>A python api for mailinator.com</p>
+        <p class="view"><a href="https://github.com/mellort/mailinator">View the Project on GitHub <small>mellort/mailinator</small></a></p>
+        <ul>
+          <li><a href="https://github.com/mellort/mailinator/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/mellort/mailinator/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/mellort/mailinator">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Intro</h1>
+
+<p>Mailinator is a service which lets you use anonymous emails for free. This
+module is a scraper for the website which lets you avoid the hassle of checking
+for updates to see if your desired email has arrived.</p>
+
+<div class="highlight">
+<pre><span class="kn">import</span> <span class="nn">mailinator</span>
+<span class="n">email</span> <span class="o">=</span> <span class="n">mailinator</span><span class="o">.</span><span class="n">get_newest_mail</span><span class="p">(</span><span class="s">'my_username'</span><span class="p">,</span> <span class="n">time_delta</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre>
+</div>
+
+
+<p>The above code will refresh the <code>my_username@mailinator.com</code> mailbox until an
+email arrives with a timestamp within the last five minutes.</p>
+
+<p>Additionally, you can view all of the mail for a particular mailbox:</p>
+
+<div class="highlight">
+<pre><span class="kn">import</span> <span class="nn">mailinator</span>
+<span class="n">emails</span> <span class="o">=</span> <span class="n">mailinator</span><span class="o">.</span><span class="n">get_mail</span><span class="p">(</span><span class="s">'my_username'</span><span class="p">)</span>
+<span class="p">[</span><span class="n">email</span><span class="o">.</span><span class="n">preview_subject</span> <span class="k">for</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">emails</span><span class="p">]</span>
+</pre>
+</div>
+
+
+<p>Returns something like the following</p>
+
+<div class="highlight">
+<pre><span class="p">[</span><span class="s">'Trends Overview Part III: Consumer'</span><span class="p">,</span>
+ <span class="s">'Find Your RV at MyRVLink.com...'</span><span class="p">,</span>
+ <span class="s">'pete@sogetthis.com Breitling Discount-74'</span><span class="p">,</span>
+ <span class="s">'Delighting Customers with Virtual Call A'</span><span class="p">,</span>
+ <span class="s">'Re: [Grinder-use] grinder-use Digest, Vo'</span><span class="p">]</span>
+</pre>
+</div>
+
+
+<h1>Install</h1>
+
+<pre><code>pip install mailinator
+</code></pre>
+
+<h1>Commmand line</h1>
+
+<p>This module also includes the command <code>mailinator</code> which is simply a call to 
+<code>get_newest_mail</code> with the first command line argument treated as the user name.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/mellort">mellort</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
