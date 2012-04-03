@@ -2,6 +2,8 @@
 import requests
 from BeautifulSoup import BeautifulSoup
 from urlparse import urlparse, parse_qs
+from datetime import datetime, timedelta
+import time
 
 _BASE_URL = 'http://www.mailinator.com'
 _URLS = {
@@ -120,7 +122,7 @@ def get_mail(name):
         link = tds[1].find('a')['href']
         # urlparse magic to grab msgid param from href
         msg_id = int(parse_qs(urlparse(link).query)['msgid'][0])
-        received = tds[2].text
+        received = _convert_mailinator_time(tds[2].text)
 
         letters.append(Letter(email=name,
                               msg_id=msg_id,
@@ -129,3 +131,48 @@ def get_mail(name):
                               preview_received=received))
 
     return letters
+
+
+def get_newest_mail(username, time_delta=5, sleep_time=10, max_time=10):
+    """
+    Fetch the most recent email for the username, according to the given params
+
+    time_delta is the maximum difference between the current time and the received
+        timestamp of the email, in minutes
+    sleep_time is the number of seconds to sleep between retries
+    max_time is the maximum number of minutes that can elapse
+    """
+    start = datetime.now()
+    # make sure we haven't exceed max_time minutes
+    while ((start - datetime.now()).total_seconds() / 60) < max_time:
+        # fetch mail, try to find one within time_delta minutes
+        now = _get_mailinator_time()
+
+        mail = get_mail(username)
+        for letter in mail:
+            delta_seconds = (now - letter.preview_received).total_seconds()
+            if (delta_seconds / 60) < time_delta:
+                letter.fetch()
+                return letter
+
+        # sleep and try again
+        time.sleep(sleep_time)
+
+    raise MailinatorException("exceeded max_time in fetching new mail")
+
+
+def _get_mailinator_time():
+    """ get the current time as utc and return as datetime object """
+    # get difference of current time from utc in seconds,
+    # taking into account for dst
+    utc_seconds = time.altzone if time.daylight else time.timezone
+
+    now = datetime.now()
+    mailinator_time = now + timedelta(seconds=utc_seconds)
+    return mailinator_time
+
+
+def _convert_mailinator_time(str_time):
+    """ return mailinator time stamps as datetime objects """
+    return datetime.strptime(str_time, "%d-%m-%Y %H:%M")
+
